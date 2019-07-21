@@ -1,6 +1,7 @@
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
 
+
 module.exports = {
     signUp(req, res, next){
         res.render("users/sign_up");
@@ -8,6 +9,7 @@ module.exports = {
 
     create(req, res, next){
              let newUser = {
+               username: req.body.username,
                email: req.body.email,
                password: req.body.password,
                passwordConfirmation: req.body.passwordConfirmation
