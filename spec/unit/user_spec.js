@@ -1,4 +1,5 @@
 const sequelize = require("../../src/db/models/index").sequelize;
+const User = require("../../src/db/models").User;
 
 describe("User", () => {
 
@@ -37,6 +38,7 @@ describe("User", () => {
 // #3
     it("should not create a user with invalid email or password", (done) => {
       User.create({
+        username: "Mario",
         email: "It's-a me, Mario!",
         password: "1234567890"
       })
