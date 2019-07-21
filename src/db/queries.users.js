@@ -1,6 +1,7 @@
 const User = require("./models").User;
 const bcrypt = require("bcryptjs");
-
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 module.exports = {
 
@@ -8,11 +9,21 @@ module.exports = {
       const salt = bcrypt.genSaltSync();
       const hashedPassword = bcrypt.hashSync(newUser.password, salt);
       return User.create({
+        username: newUser.username,
         email: newUser.email,
-        password: hashedPassword,
-        username: newUser.username
+        password: hashedPassword
+        
       })
         .then((user) => {
+          const msg = {
+            to: newUser.email,
+            from: 'admin@Blocipedia.com',
+            subject: 'Blocipedia account created',
+            text: 'Blocipedia account has been created',
+            html: '<strong>Welcome to Blocipedia</strong>',
+          };
+          sgMail.send(msg);
+
             callback(null, user);
         })
         .catch((err) => {
