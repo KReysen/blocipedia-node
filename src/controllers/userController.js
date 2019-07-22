@@ -1,5 +1,7 @@
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
+const express = require('express');
+const router = express.Router();
 
 
 module.exports = {
@@ -47,6 +49,7 @@ module.exports = {
         req.flash("notice", "You've successfully signed out!");
         res.redirect("/");
       },
+
       show(req, res, next){
 
          userQueries.getUser(req.params.id, (err, result) => {

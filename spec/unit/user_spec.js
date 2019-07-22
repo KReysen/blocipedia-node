@@ -19,7 +19,7 @@ describe("User", () => {
   describe("#create()", () => {
 
 // #2
-    it("should create a User object with a valid email and password", (done) => {
+    it("should create a User object with a valid email, password, and username", (done) => {
       User.create({
         username: "Leroy Jenkins",
         email: "user@example.com",
@@ -62,12 +62,15 @@ describe("User", () => {
 
 // #5
       User.create({
+        username: "Example",
         email: "user@example.com",
         password: "1234567890"
       })
+      
       .then((user) => {
 
         User.create({
+          username: "Copycat",
           email: "user@example.com",
           password: "nananananananananananananananana BATMAN!"
         })
@@ -76,11 +79,13 @@ describe("User", () => {
           // the code in this block will not be evaluated since the validation error
           // will skip it. Instead, we'll catch the error in the catch block below
           // and set the expectations there
+          console.log("Block!");
 
           done();
         })
         .catch((err) => {
           expect(err.message).toContain("Validation error");
+          console.log(err.message);
           done();
         });
 

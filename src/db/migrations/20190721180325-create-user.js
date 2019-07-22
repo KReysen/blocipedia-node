@@ -10,7 +10,8 @@ module.exports = {
       },
       username: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       email: {
         type: Sequelize.STRING,
@@ -18,7 +19,7 @@ module.exports = {
         unique: true,
         validate: {
           isEmail: { msg: "must be a valid email" }
-        },
+        }
       },
       password: {
         type: Sequelize.STRING,
