@@ -11,13 +11,16 @@ module.exports = {
 
     passport.use(new LocalStrategy({
       usernameField: "email"
+      
     }, (email, password, done) => {
+      console.log(email);
       User.findOne({
         where: { email }
       })
       .then((user) => {
-
+         
         if (!user || !authHelper.comparePass(password, user.password)) {
+          console.log(user);
           return done(null, false, { message: "Invalid email or password" });
         }
         return done(null, user);
