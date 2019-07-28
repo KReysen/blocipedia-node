@@ -38,4 +38,51 @@ describe("routes : wikis", () => {
         });
     });
 
+    describe("GET /wikis/new", () => {
+        
+        it("should render a new wiki form", (done) => {
+            request.get(`${base}new`, (err, res, body) => {
+                expect(err).toBeNull();
+                expect(body).toContain("New Wiki");
+                done();
+            });
+        });
+    });
+
+    describe("POST /wikis/create", () => {
+        const options = {
+            url: `${base}create`, 
+            form: {
+                title: "blink-182 songs",
+                body: "All the hits"
+            }
+        };
+        it("should create a new wiki and redirect", (done) => {
+            request.post(options,
+                (err, res, body) => {
+                    Wiki.findOne({where: {title: "blink-182 songs"}})
+                    .then((wiki) => {
+                        expect(res.statusCode).toBe(303);
+                        expect(wiki.title).toBe("blink-182 songs");
+                        expect(wiki.body).toBe("All the hits");
+                        done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                });
+        });
+    });
+
+    describe("GET /wikis/:id", () => {
+        it("should render a view with the selected wiki", (done) => {
+            request.get(`${base}${this.wiki.id}`, (err, res, body) => {
+                expect(err).toBeNull();
+                expect(body).toContain("JS Frameworks");
+                done();
+            });
+        });
+    });
+
 });
