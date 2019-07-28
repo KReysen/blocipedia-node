@@ -1,3 +1,4 @@
+require("dotenv").config();
 const Wiki = require("./models").Wiki;
 
 module.exports = {
@@ -13,7 +14,9 @@ module.exports = {
     addWiki(newWiki, callback){
         return Wiki.create({
             title: newWiki.title,
-            body: newWiki.body
+            body: newWiki.body,
+            private: newWiki.private,
+            
         })
         .then((wiki) => {
             callback(null, topic);
@@ -26,6 +29,17 @@ module.exports = {
         return Wiki.findById(id)
         .then((wiki) => {
             callback(null, wiki);
+        })
+        .catch((err) => {
+            callback(err);
+        })
+    },
+    deleteWiki(id, callback){
+        return Wiki.destroy({
+            where: {id}
+        })
+        .then((topic) => {
+            callback(null, topic);
         })
         .catch((err) => {
             callback(err);

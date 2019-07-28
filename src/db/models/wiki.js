@@ -1,17 +1,20 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Wiki = sequelize.define('Wiki', {
-    title: DataTypes.STRING,
-    body: DataTypes.STRING,
-    private: DataTypes.BOOLEAN,
-    userId: {
-      type: DataTypes.INTEGER,
-      onDelete: "CASCADE",
-      references: {
-        model: "Users",
-        key: "id",
-        as: "userId",
-      }
+    title: 
+    {
+    	type:DataTypes.STRING,
+    	allowNull: false
+    },
+    body: {
+    	type: DataTypes.STRING,
+    	allowNull: false
+    },
+    private: 
+    {
+    	type: DataTypes.BOOLEAN,
+    	allowNull: false,
+    	defaultValue: false
     }
   }, {});
 

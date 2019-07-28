@@ -3,6 +3,7 @@ const server = require("../../src/server");
 const base = "http://localhost:3000/wikis/";
 const sequelize = require("../../src/db/models/index").sequelize;
 const Wiki = require("../../src/db/models").Wiki;
+const User = require("../../src/db/models").User;
 
 
 
@@ -32,7 +33,6 @@ describe("routes : wikis", () => {
               expect(res.statusCode).toBe(200);
               expect(err).toBeNull();
               expect(body).toContain("Wikis");
-              expect(body).toContain("JS Frameworks");
               done();
             });
         });
@@ -50,14 +50,16 @@ describe("routes : wikis", () => {
     });
 
     describe("POST /wikis/create", () => {
+        it("should create a new wiki and redirect", (done) => {
         const options = {
             url: `${base}create`, 
             form: {
                 title: "blink-182 songs",
-                body: "All the hits"
+                body: "All the hits",
+                private: false
             }
         };
-        it("should create a new wiki and redirect", (done) => {
+        
             request.post(options,
                 (err, res, body) => {
                     Wiki.findOne({where: {title: "blink-182 songs"}})
@@ -84,5 +86,27 @@ describe("routes : wikis", () => {
             });
         });
     });
+
+    describe("POST /wikis/:id/destroy", () => {
+        it("should delete the wiki with the associated ID", (done) => {
+          Wiki.all()
+          .then((wikis) => {
+            const wikiCountBeforeDelete = wikis.length;
+            expect(wikiCountBeforeDelete).toBe(1);
+            request.post(`${base}${this.wiki.id}/destroy`, (err, res, body) => {
+              Wiki.all()
+              .then((wikis) => {
+                expect(err).toBeNull();
+                expect(wikis.length).toBe(wikiCountBeforeDelete - 1);
+                done();
+              })
+              .catch((err) => {
+                console.log(err);
+                done();
+              })
+            });
+          })
+        });
+      });
 
 });
