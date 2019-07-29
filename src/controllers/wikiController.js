@@ -37,12 +37,34 @@ module.exports = {
         });
     },
     destroy(req, res, next){
-        wikiQueries.deleteWiki(req, (err, wiki) => {
+        wikiQueries.deleteWiki(req.params.id, (err, wiki) => {
           if(err){
-            res.redirect(err, `/wikis/${req.params.id}`)
+            res.redirect(e500, `/wikis/${wiki.id}`)
           } else {
             res.redirect(303, "/wikis")
           }
         });
       },
+      edit(req, res, next){
+          wikiQueries.getWiki(req.params.id, (err, wiki) => {
+              if(err || wiki == null){
+                  res.redirect(404, "/");
+              } else {
+                  res.render("wikis/edit", {wiki});
+              }
+          });
+      },
+      update(req, res, next){
+
+        //#1
+             wikiQueries.updateWiki(req.params.id, req.body, (err, wiki) => {
+        
+        //#2
+               if(err || wiki == null){
+                 res.redirect(404, `/wikis/${req.params.id}/edit`);
+               } else {
+                 res.redirect(`/wikis/${wiki.id}`);
+               }
+             });
+           }
 }

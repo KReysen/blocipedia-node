@@ -11,6 +11,7 @@
 
       <p><%= wiki.body %></p>
       <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
+        <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
         <button type="submit" class="btn btn-danger">Delete</button>
       </form>
     </main>
