@@ -17,15 +17,21 @@ module.exports = {
                passwordConfirmation: req.body.passwordConfirmation
              };
              userQueries.createUser(newUser, (err, user) => {
-               if(err){
-                 req.flash("error", err);
-                 res.redirect("/users/sign_up");
-               } else {
-                 passport.authenticate("local")(req, res, () => {
-                   req.flash("notice", "You've successfully signed in!");
-                   res.redirect("/");
-                 })
-               }
+              //  if(err){
+              //    req.flash("error", err);
+              //    res.redirect("/users/sign_up");
+              //  } else {
+                passport.authenticate("local", function(){
+                  if(!req.user){
+                    console.log('no user');
+                    req.flash("notice", "Sign in failed. Please try again.")
+                    res.redirect("/users/sign_in");
+                  } else {
+                    req.flash("notice", "You've successfully signed in!");
+                    res.redirect("/");
+                  }
+                })
+               //}
              });
            },
            
@@ -37,9 +43,9 @@ module.exports = {
     signIn(req, res, next){
       console.log('sign in');
         passport.authenticate("local")(req, res, function () {
-          console.log(req.user);
+          
           if(!req.user){
-            console.log('no user');
+            
             req.flash("notice", "Sign in failed. Please try again.")
             res.redirect("/users/sign_in");
           } else {
