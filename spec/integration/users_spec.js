@@ -27,7 +27,7 @@ describe("routes : users", () => {
         });
       });
 
-      describe("POST /users/sign_up", () => {
+      describe("POST /users", () => {
             it("should create a new user with valid values and redirect", (done) => { 
               const options = {
                 url: base,

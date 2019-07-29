@@ -8,13 +8,33 @@ const User = require("../../src/db/models").User;
 
 
 describe("routes : wikis", () => {
+
     beforeEach((done) => {
+        this.user;
         this.wiki;
+
         sequelize.sync({force: true}).then((res) => {
+          User.create({
+            username: "captian",
+            email: "starman@tesla.com",
+            password: "Trekkie4lyfe",
+            role: 0
+          })
+          .then((user) => {
+            this.user = user;
+            request.get({
+               url: "http://localhost:3000/auth/fake",
+               form: {
+                 id: user.id,
+                 username: user.name,
+                 email: user.email,
+                 role: user.role
+               }
+             });
             Wiki.create({
                 title: "JS Frameworks",
                 body: "There are a lot of them",
-                private: false 
+                userId: this.user.id
             })
             .then((wiki) => {
                 this.wiki = wiki;
@@ -24,6 +44,7 @@ describe("routes : wikis", () => {
                 console.log(err);
                 done();
             });
+          })
         });
     });
 
@@ -56,7 +77,8 @@ describe("routes : wikis", () => {
             form: {
                 title: "blink-182 songs",
                 body: "All the hits",
-                private: false
+                private: false,
+                userId: this.user.id
             }
         };
         
