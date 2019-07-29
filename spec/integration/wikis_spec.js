@@ -115,7 +115,7 @@ describe("routes : wikis", () => {
                   expect(err).toBeNull();
                   expect(body).toContain("Edit wiki");
                   expect(body).toContain("JS Frameworks");
-                  console.log(err);
+                 
                   done();
               });
           });
