@@ -16,6 +16,7 @@ module.exports = {
         password: req.body.password,
         passwordConfirmation: req.body.passwordConfirmation
       };
+
       userQueries.createUser(newUser, (err, user) => {
         if(err){
           req.flash("error", err);
@@ -30,18 +31,19 @@ module.exports = {
     },
            
     signInForm(req, res, next){
-      console.log('trying to render sign in form');
+      
         res.render("users/sign_in");
     },
 
     signIn(req, res, next){
       console.log('sign in');
-      passport.authenticate("local", function(){
+      passport.authenticate("local")(req, res, function(){
         if(!req.user){
           console.log('no user');
           req.flash("notice", "Sign in failed. Please try again.")
           res.redirect("/users/sign_in");
         } else {
+          console.log('signing in');
           req.flash("notice", "You've successfully signed in!");
           res.redirect("/");
         }

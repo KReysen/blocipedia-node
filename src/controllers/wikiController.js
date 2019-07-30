@@ -24,7 +24,9 @@ module.exports = {
     create(req, res, next){
         let newWiki = {
             title: req.body.title,
-            body: req.body.body
+            body: req.body.body,
+            private: false,
+            userId: req.user.id
         };
         wikiQueries.addWiki(newWiki, (err, wiki) => {
             if(err){
@@ -70,7 +72,7 @@ module.exports = {
                if(err || wiki == null){
                  res.redirect(404, `/wikis/${req.params.id}/edit`);
                } else {
-                 res.redirect(`/wikis/${wiki.id}`);
+                 res.redirect(`/wikis/${req.params.id}`);
                }
              });
            }

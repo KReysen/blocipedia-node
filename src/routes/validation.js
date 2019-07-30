@@ -19,6 +19,7 @@ module.exports = {
         if (req.method === "POST") {
             req.checkBody("email", "must be valid").isEmail();
             req.checkBody("password", "must match password provided").matches(req.body.password);
+            console.log('sign in validated');
         }
         const errors = req.validationErrors();
         if (errors) {
