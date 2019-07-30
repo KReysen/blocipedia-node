@@ -4,7 +4,7 @@ module.exports = class WikiPolicy extends ApplicationPolicy {
 
  // #2
   new() {
-    return this._isAdmin();
+    return this.user != null;
   }
 
   create() {
@@ -13,7 +13,7 @@ module.exports = class WikiPolicy extends ApplicationPolicy {
 
  // #3
   edit() {
-    return this._isAdmin();
+    return this._isAdmin() || this._isOwner();
   }
 
   update() {
