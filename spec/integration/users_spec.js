@@ -44,6 +44,7 @@ describe("routes : users", () => {
                     expect(user).not.toBeNull();
                     expect(user.email).toBe("user@example.com");
                     expect(user.id).toBe(1);
+                    expect(user.role).toBe('0');
                     done();
                   })
                   .catch(err => {
@@ -59,9 +60,9 @@ describe("routes : users", () => {
                 {
                   url: base,
                   form: {
-                    email: "no",
-                    password: "123456789",
-                    username: "none"
+                    username: 'no',
+                    email: 'no',
+                    password: "1234567"
                   }
                 },
                 (err, res, body) => {
