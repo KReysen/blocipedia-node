@@ -1,10 +1,18 @@
 'use strict';
+const bcrypt = require("bcryptjs");
+
 const faker = require("faker");
+
+const encryptPassword = (password) => {
+  const salt = bcrypt.genSaltSync();
+  const hashedPassword = bcrypt.hashSync(password, salt);
+  return hashedPassword;
+}
 let users = [
   {
     username: 'Leo',
     email: 'Leo@cat.com',
-    password: 'password',
+    password: encryptPassword('password'),
     createdAt: new Date(),
     updatedAt: new Date(),
     role: 0
@@ -12,7 +20,7 @@ let users = [
   {
     username: 'Mack',
     email: 'Mack@dog.com',
-    password: 'password1',
+    password: encryptPassword('password1'),
     createdAt: new Date(),
     updatedAt: new Date(),
     role: 0
@@ -20,7 +28,7 @@ let users = [
   {
     username: 'MrMoneybags',
     email: 'rich@wealth.com',
-    password: 'password2',
+    password: encryptPassword('password2'),
     createdAt: new Date(),
     updatedAt: new Date(),
     role: 1
