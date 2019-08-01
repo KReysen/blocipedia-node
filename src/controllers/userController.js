@@ -73,7 +73,7 @@ module.exports = {
        }
       },
 
-       upgradePage(){
+       upgradePage(req, res, next){
          userQueries.getUser(req.params.id, (err, result) => {
            if(err || result == null){
              res.redirect(404, "/");
@@ -82,6 +82,16 @@ module.exports = {
            }
          });
 
+       },
+
+       downgradePage(req, res, next){
+        userQueries.getUser(req.params.id, (err, result) => {
+          if(err || result == null){
+            res.redirect(404, "/");
+          } else {
+            res.render("users/downgrade_page", {user: result.user});
+          }
+        });
        },
 
        upgrade(req, res, next){

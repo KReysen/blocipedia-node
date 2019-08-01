@@ -15,4 +15,7 @@ router.get("/users/sign_out", userController.signOut);
 
 router.get("/users/:id", userController.show);
 
+router.get("/users/:id/upgrade_page", userController.upgradePage);
+router.get("/users/:id/downgrade_page", userController.downgradePage);
+
 module.exports = router;

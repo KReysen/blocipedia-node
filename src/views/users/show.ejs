@@ -15,9 +15,31 @@
       <h1><%= `${user.username}'s profile` %></h1>
 
       <hr>
+      <!-- Put in a block here for upgrading the account -->
+      <% if (currentUser.id === user.id && (currentUser.role == 0 || currentUser.role == null)) { %>
+        <p>
+            You have a <strong>Standard Account</strong>. Upgrade today to create private wikis.
+        </p>
+        <a href="/users/<%= currentUser.id %>/upgrade_page"
+            class="btn btn-primary btn-lg">Upgrade</a
+        >
+        <% } if (currentUser.role == "1") { %>
+        <p>
+            You have a <strong>Premium Account</strong>. Downgrade at any
+            time by clicking below.
+        </p>
+        <a href="/users/<%= currentUser.id %>/downgrade_page"
+            class="btn btn-primary btn-lg"
+            >Downgrade</a
+        >
+        <% } if (currentUser.role == "2") { %>
+        <p>You are an <strong>Administrator</strong>.</p>
+        <% } %>
+    
+       
 
 
-      
+
       <h2> Latest Wikis</h2>
       <ul class="list-unstyled">
         <% if(wikis) { %>

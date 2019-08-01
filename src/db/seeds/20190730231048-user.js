@@ -33,6 +33,15 @@ let users = [
     updatedAt: new Date(),
     role: 1
   },
+
+  {
+    username: 'admin',
+    email: 'admin@blocipedia.com',
+    password: encryptPassword('password3'),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    role: 2
+  },
 ];
 
 module.exports = {
