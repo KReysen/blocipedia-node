@@ -2,6 +2,8 @@ const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
 const express = require('express');
 const router = express.Router();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const publishableKey = process.env.PUBLISHABLE_KEY;
 
 
 module.exports = {
@@ -36,15 +38,12 @@ module.exports = {
     },
 
     signIn(req, res, next){
-      console.log('sign in');
+      
       passport.authenticate("local")(req, res, function(){
-        console.log('before if statment');
         if(!req.user){
-          console.log('no user');
           req.flash("notice", "Sign in failed. Please try again.")
           res.redirect("/users/sign_in");
         } else {
-          console.log('signing in');
           req.flash("notice", "You've successfully signed in!");
           res.redirect("/");
         }
@@ -58,7 +57,7 @@ module.exports = {
       },
 
       show(req, res, next){
-
+         if(req.user && req.user.id == req.params.id){
          userQueries.getUser(req.params.id, (err, result) => {
      
            if(err || result.user === undefined){
@@ -69,5 +68,57 @@ module.exports = {
              res.render("users/show", {...result});
            }
          });
+       } else {
+         res.redirect(403, "/");
        }
+      },
+
+       upgradePage(){
+         userQueries.getUser(req.params.id, (err, result) => {
+           if(err || result == null){
+             res.redirect(404, "/");
+           } else {
+             res.render("users/upgrade_page", {user: result.user});
+           }
+         });
+
+       },
+
+       upgrade(req, res, next){
+         stripe.customers
+         .create({
+           email: req.body.stripeEmail,
+         })
+         .then((customer) => {
+           return stripe.customers.createSource(customer.id, {
+             source: 'tok_visa',
+           });
+         })
+         .then((source) => {
+           return stripe.charges.create({
+             amount: 1500,
+             currency: 'usd',
+             customer: source.customer,
+           });
+         })
+         .then((charge) => {
+           if (charge) {
+             userQueries.upgradeUser(req.params.id, (err, result) => {
+               req.flash("notice", "You have upgraded to premium user status");
+               res.redirect("/users/" + req.user.id);
+             });
+           } else {
+             req.flash("notice", "Error, upgrade unsuccessful");
+             res.redirect("/users/" + req.user.id);
+           }
+         })
+         .catch((err) => {
+           console.log(err);
+         });
+      
+       },
+
+       downgrade(){
+
+       },
 }
