@@ -1,9 +1,10 @@
+require("dotenv").config();
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
 const express = require('express');
-const router = express.Router();
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const publishableKey = process.env.PUBLISHABLE_KEY;
+// const publishableKey = process.env.PUBLISHABLE_KEY;
 
 
 module.exports = {
@@ -95,23 +96,21 @@ module.exports = {
        },
 
        upgrade(req, res, next){
-         stripe.customers
+         
+        stripe.customers
          .create({
            email: req.body.stripeEmail,
+           source: req.body.stripeToken
          })
-         .then((customer) => {
-           return stripe.customers.createSource(customer.id, {
-             source: 'tok_visa',
-           });
-         })
-         .then((source) => {
+         .then(customer => {
            return stripe.charges.create({
              amount: 1500,
-             currency: 'usd',
-             customer: source.customer,
+             description: "Blocipedia premium account upgrade",
+             currency: "usd",
+             customer: customer.id
            });
          })
-         .then((charge) => {
+         .then(charge => {
            if (charge) {
              userQueries.upgradeUser(req.params.id, (err, result) => {
                req.flash("notice", "You have upgraded to premium user status");
@@ -128,7 +127,16 @@ module.exports = {
       
        },
 
-       downgrade(){
-
+       downgrade(req, res, next){
+         userQueries.downgradeUser(req.params.id, (err, result) => {
+           if(result) {
+             userQueries.downgradeUser(result.id);
+             req.flash("notice", "You have been downgrade to standard user status");
+             res.redirect("/");
+           } else {
+             req.flash("notice", "Error - downgrade failed");
+             res.redirect("/users/" + req.user.id);
+           }
+         });
        },
 }
