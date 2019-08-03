@@ -74,7 +74,7 @@ module.exports = {
       },
 
        upgrade(req, res, next){
-         console.log(process.env.STRIPE_SECRET_KEY);
+
          const payment = 1500;
         stripe.customers
          .create({
