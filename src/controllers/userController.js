@@ -74,6 +74,7 @@ module.exports = {
       },
 
        upgrade(req, res, next){
+         console.log(process.env.STRIPE_SECRET_KEY);
          const payment = 1500;
         stripe.customers
          .create({
@@ -92,7 +93,7 @@ module.exports = {
            if (charge) {
              userQueries.upgradeUser(req.params.id, (err, result) => {
                req.flash("notice", "You have upgraded to premium user status");
-               res.redirect("/users/" + req.user.id);
+               res.redirect("/");
              });
            } else {
              req.flash("notice", "Error, upgrade unsuccessful");
@@ -106,15 +107,10 @@ module.exports = {
        },
 
        downgrade(req, res, next){
-         userQueries.downgradeUser(req.params.id, (err, result) => {
-           if(result) {
-             userQueries.downgradeUser(result.id);
-             req.flash("notice", "You have been downgrade to standard user status");
-             res.redirect("/");
-           } else {
-             req.flash("notice", "Error - downgrade failed");
-             res.redirect("/users/" + req.user.id);
-           }
-         });
+         userQueries.downgradeUser(req.params.id);
+          {
+            req.flash("notice", "You are now a standard user");
+            res.redirect("/");
+          }
        },
 }

@@ -46,17 +46,20 @@ module.exports = {
       });
     },
 
-    downgradeUser(id, callback){
+    downgradeUser(id){
       User.findById(id)
-      .then(user => {
-        user.update({
-          role: 0
-        });
-        callback(null, user);
+      .then((user) => {
+        if(!user) {
+          console.log('no user');
+          return callback("No user");
+        } else {
+          console.log('downgrading user');
+          return user.update({ role: 0 });
+      }
       })
       .catch(err => {
-        callback(err);
-      });
+        console.log(err);
+      })
     },
 
     getUser(id, callback){
