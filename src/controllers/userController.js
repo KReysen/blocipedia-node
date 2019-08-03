@@ -4,7 +4,7 @@ const passport = require("passport");
 const express = require('express');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-// const publishableKey = process.env.PUBLISHABLE_KEY;
+const publishableKey = process.env.PUBLISHABLE_KEY;
 
 
 module.exports = {
@@ -65,7 +65,6 @@ module.exports = {
              req.flash("notice", "No user found with that ID.");
              res.redirect("/");
            } else {
-     
              res.render("users/show", {...result});
            }
          });
@@ -74,29 +73,8 @@ module.exports = {
        }
       },
 
-       upgradePage(req, res, next){
-         userQueries.getUser(req.params.id, (err, result) => {
-           if(err || result == null){
-             res.redirect(404, "/");
-           } else {
-             res.render("users/upgrade_page", {user: result.user});
-           }
-         });
-
-       },
-
-       downgradePage(req, res, next){
-        userQueries.getUser(req.params.id, (err, result) => {
-          if(err || result == null){
-            res.redirect(404, "/");
-          } else {
-            res.render("users/downgrade_page", {user: result.user});
-          }
-        });
-       },
-
        upgrade(req, res, next){
-         
+         const payment = 1500;
         stripe.customers
          .create({
            email: req.body.stripeEmail,
@@ -104,7 +82,7 @@ module.exports = {
          })
          .then(customer => {
            return stripe.charges.create({
-             amount: 1500,
+             amount: payment,
              description: "Blocipedia premium account upgrade",
              currency: "usd",
              customer: customer.id

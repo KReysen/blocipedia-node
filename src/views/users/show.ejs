@@ -20,18 +20,38 @@
         <p>
             You have a <strong>Standard Account</strong>. Upgrade today to create private wikis.
         </p>
-        <a href="/users/<%= currentUser.id %>/upgrade_page"
-            class="btn btn-primary btn-lg">Upgrade</a
-        >
+        <!-- <a href="/users/<%= currentUser.id %>/upgrade_page"
+            class="btn btn-primary btn-lg">Upgrade</a> -->
+            <p>Test card info:</p>
+                <p>Enter 4242 4242 4242 4242 for the card number</p>
+                <p >Enter any expiration date in the future</p>
+                <p>Enter any 3 digit code for the  CVV</p>
+               
+                <form action="/users/<%=currentUser.id%>/upgrade" method="POST">
+                  <script
+                      src="https://checkout.stripe.com/checkout.js"
+                      class="stripe-button"
+                      data-amount="1500"
+                      data-key="pk_test_dNWpiU0irsAD41zhipxim6Px00aGKRaxi4"
+                      data-name="Blocipedia"
+                      data-description="Blocipedia Premium Account"
+                      data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                      data-locale="auto"
+                  ></script>
+              </form>
+              <hr>
+
+              <!-- downgrade user -->
         <% } if (currentUser.role == "1") { %>
         <p>
             You have a <strong>Premium Account</strong>. Downgrade at any
             time by clicking below.
         </p>
-        <a href="/users/<%= currentUser.id %>/downgrade_page"
-            class="btn btn-primary btn-lg"
-            >Downgrade</a
-        >
+        <form action="/users/<%=currentUser.id%>/downgrade" method="POST">
+          <button type="submit" class="btn btn-danger">Downgrade account</button>
+      </form>
+
+           <!-- show admin user -->
         <% } if (currentUser.role == "2") { %>
         <p>You are an <strong>Administrator</strong>.</p>
         <% } %>
