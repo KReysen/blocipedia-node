@@ -1,5 +1,6 @@
 require("dotenv").config();
 const userQueries = require("../db/queries.users.js");
+const wikiQueries = require("../db/queries.wikis.js");
 const passport = require("passport");
 const express = require('express');
 
@@ -108,8 +109,9 @@ module.exports = {
 
        downgrade(req, res, next){
          userQueries.downgradeUser(req.params.id);
+         wikiQueries.downgradeUserWikis(req.params.id);
           {
-            req.flash("notice", "You are now a standard user");
+            req.flash("notice", "You are now a standard user. Your private wikis have been made public");
             res.redirect("/");
           }
        },

@@ -50,10 +50,8 @@ module.exports = {
       User.findById(id)
       .then((user) => {
         if(!user) {
-          console.log('no user');
           return callback("No user");
         } else {
-          console.log('downgrading user');
           return user.update({ role: 0 });
       }
       })

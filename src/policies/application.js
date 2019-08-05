@@ -12,15 +12,15 @@ module.exports = class ApplicationPolicy {
      }
    
      _isMember() {
-       return this.user && (this.user.role == 0);
+       return this.user && (this.user.role == '0');
      }
    
      _isPremium() {
-       return this.user && (this.user.role == 1);
+       return this.user && (this.user.role == '1');
      }
    
      _isAdmin() {
-       return this.user && (this.user.role == 2);
+       return this.user && (this.user.role == '2');
      }
    
     // #3
@@ -39,7 +39,7 @@ module.exports = class ApplicationPolicy {
     // #4
      edit() {
        return this.new() &&
-         this.record && (this._isOwner() || this._isAdmin());
+         this.record && (this._isMember() || this._isAdmin() || this._isPremium());
      }
    
      update() {
@@ -50,4 +50,4 @@ module.exports = class ApplicationPolicy {
      destroy() {
        return this.update();
      }
-   }
+   };
