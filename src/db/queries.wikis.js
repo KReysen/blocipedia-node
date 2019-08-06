@@ -3,7 +3,7 @@ const Wiki = require("./models").Wiki;
 
 module.exports = {
     getAllWikis(callback) {
-        return Wiki.all()
+        return Wiki.findAll()
         .then((wikis) => {
             callback(null, wikis);
         })
@@ -26,7 +26,7 @@ module.exports = {
         })
     },
     getWiki(id, callback){
-        return Wiki.findById(id)
+        return Wiki.findByPk(id)
         .then((wiki) => {
             callback(null, wiki);
         })
@@ -46,7 +46,7 @@ module.exports = {
         })
     },
     updateWiki(id, updatedWiki, callback){
-        return Wiki.findById(id)
+        return Wiki.findByPk(id)
         .then((wiki) => {
           if(!wiki){
             return callback("wiki not found");
