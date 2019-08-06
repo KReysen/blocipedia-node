@@ -27,8 +27,8 @@ module.exports = {
         let newWiki = {
             title: req.body.title,
             body: req.body.body,
-            private: false,
-            
+            private: req.body.private,
+            userId: req.user.id
         };
         wikiQueries.addWiki(newWiki, (err, wiki) => {
             if(err){
@@ -51,29 +51,39 @@ module.exports = {
         });
     },
     destroy(req, res, next){
+        const authorized = new Authorizer(req.user).destroy();
+        if(authorized){
         wikiQueries.deleteWiki(req.params.id, (err, wiki) => {
           if(err){
             res.redirect(e500, `/wikis/${wiki.id}`)
           } else {
             res.redirect(303, "/wikis")
           }
-        });
+         });
+          } else {
+            req.flash("notice", "You are not authorized to do that")
+            res.redirect(`/wikis/${req.params.id}`)
+          }
       },
       edit(req, res, next){
           wikiQueries.getWiki(req.params.id, (err, wiki) => {
               if(err || wiki == null){
                   res.redirect(404, "/");
               } else {
+                  const authorized = new Authorizer(req.user, wiki).edit();
+                  if(authorized){
                   res.render("wikis/edit", {wiki});
+                  } else {
+                    req.flash("notice", "You are not authorized to do that")
+                    res.redirect(`/wikis/${req.params.id}`)
+                  }
               }
           });
       },
       update(req, res, next){
 
-        //#1
              wikiQueries.updateWiki(req.params.id, req.body, (err, wiki) => {
-        
-        //#2
+
                if(err || wiki == null){
                  res.redirect(404, `/wikis/${req.params.id}/edit`);
                } else {

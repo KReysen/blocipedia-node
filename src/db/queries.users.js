@@ -34,7 +34,7 @@ module.exports = {
     },
 
     upgradeUser(id, callback){
-      User.findById(id)
+      User.findByPk(id)
       .then(user => {
         user.update({
           role: 1
@@ -47,13 +47,11 @@ module.exports = {
     },
 
     downgradeUser(id){
-      User.findById(id)
+      User.findByPk(id)
       .then((user) => {
         if(!user) {
-          console.log('no user');
           return callback("No user");
         } else {
-          console.log('downgrading user');
           return user.update({ role: 0 });
       }
       })

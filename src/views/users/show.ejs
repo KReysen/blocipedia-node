@@ -61,15 +61,18 @@
 
       <h2> Latest Wikis</h2>
       <ul class="list-unstyled">
-        <% if(wikis) { %>
           <% wikis.forEach((wiki) => { %>
-            <li>
-              <a href="/wikis/<%= wiki.id %>">
-                <%= wiki.title %>
-              </a>
-            </li>
+            <% if((wiki.private || !wiki.private) && (currentUser) && currentUser.role == '1' || (currentUser) && currentUser.role === '2'){ %>
+              <li class="list-group-item">
+                <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
+              </li>
+
+            <% } else if (!wiki.private){ %>
+              <li class="list-group-item">
+                <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %>  </a>
+              </li>
+            <% } %>
           <% }) %>
-        <% } %>
       </ul>
       <hr>
 

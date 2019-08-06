@@ -3,7 +3,7 @@ const Wiki = require("./models").Wiki;
 
 module.exports = {
     getAllWikis(callback) {
-        return Wiki.all()
+        return Wiki.findAll()
         .then((wikis) => {
             callback(null, wikis);
         })
@@ -16,7 +16,7 @@ module.exports = {
             title: newWiki.title,
             body: newWiki.body,
             private: newWiki.private,
-            
+            userId: newWiki.userId
         })
         .then((wiki) => {
             callback(null, wiki);
@@ -26,7 +26,7 @@ module.exports = {
         })
     },
     getWiki(id, callback){
-        return Wiki.findById(id)
+        return Wiki.findByPk(id)
         .then((wiki) => {
             callback(null, wiki);
         })
@@ -46,12 +46,11 @@ module.exports = {
         })
     },
     updateWiki(id, updatedWiki, callback){
-        return Wiki.findById(id)
+        return Wiki.findByPk(id)
         .then((wiki) => {
           if(!wiki){
             return callback("wiki not found");
           }
-   
           wiki.update(updatedWiki, {
             fields: Object.keys(updatedWiki)
           })
@@ -62,5 +61,20 @@ module.exports = {
             callback(err);
           });
         });
-      }
+      },
+
+      downgradeUserWikis(id, callback) {
+        return Wiki.findAll({
+            where: { userId: id }
+        })
+        .then(wikis => {
+            wikis.forEach(wiki => {
+                wiki.update({ private: false});
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+      },
+
 }
