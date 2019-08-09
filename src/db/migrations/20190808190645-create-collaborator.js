@@ -9,10 +9,24 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       wikiId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: "CASCADE",
+        references: {
+          model: "Wikis",
+          key: "id",
+          as: "wikiId"
+        }
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: "CASCADE",
+        references: {
+          model: "Users",
+          key: "id",
+          as: "userId"
+        }
       },
       createdAt: {
         allowNull: false,

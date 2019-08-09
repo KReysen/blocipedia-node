@@ -1,6 +1,7 @@
 require("dotenv").config();
 const userQueries = require("../db/queries.users.js");
 const wikiQueries = require("../db/queries.wikis.js");
+const collaboratorQueries = require("../db/queries.collaborators.js");
 const passport = require("passport");
 const express = require('express');
 
@@ -115,4 +116,16 @@ module.exports = {
             res.redirect("/");
           }
        },
+       getCollaborators(req, res, next) {
+         userQueries.getUserCollabs(req.user.id, (err, result) => {
+          user = result["user"];
+          collaborator = result["collaborator"];
+          if(err || user == null){
+             res.redirect(404, "/");
+           } else {
+             res.render("users/collaborators", {collaborator});
+           }
+         });
+
+       }
 }

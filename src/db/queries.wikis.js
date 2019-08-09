@@ -1,5 +1,6 @@
 require("dotenv").config();
 const Wiki = require("./models").Wiki;
+const Collaborator = require("./models").Collaborator;
 
 module.exports = {
     getAllWikis(callback) {
@@ -26,7 +27,11 @@ module.exports = {
         })
     },
     getWiki(id, callback){
-        return Wiki.findByPk(id)
+        return Wiki.findByPk(id, {
+            include: [
+                {model: Collaborator, as: "collaborators"}
+            ]
+        })
         .then((wiki) => {
             callback(null, wiki);
         })

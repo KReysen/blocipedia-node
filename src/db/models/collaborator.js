@@ -16,13 +16,13 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "wikiId",
       onDelete: "CASCADE"
     });
-    
+
     Collaborator.belongsTo(models.User, {
       foreignKey: "userId",
       onDelete: "CASCADE"
     });
 
-    Collaborator.addScope('collaboratorFor', (userId) => {
+    Collaborator.addScope('isCollaboratorFor', (userId) => {
       return {
         where: {userId: userId},
         order: [["createdAt", "DESC"]]
