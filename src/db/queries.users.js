@@ -3,6 +3,7 @@ const User = require("./models").User;
 const bcrypt = require("bcryptjs");
 const sgMail = require('@sendgrid/mail');
 const Wiki = require("./models").Wiki;
+const wikiQueries = require("./queries.wikis.js");
 const Collaborator = require("./models").Collaborator;
 const collaboratorQueries = require("../db/queries.collaborators.js");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -101,7 +102,6 @@ module.exports = {
         }
       });
     }
-
 
   
   }

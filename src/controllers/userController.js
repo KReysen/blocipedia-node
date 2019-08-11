@@ -117,9 +117,11 @@ module.exports = {
           }
        },
        getCollaborators(req, res, next) {
+         console.log('hit getCollaborators function');
          userQueries.getUserCollabs(req.user.id, (err, result) => {
-          user = result["user"];
-          collaborator = result["collaborator"];
+
+           const collaborator = result.collaborator;
+           const user = result.user;
           if(err || user == null){
              res.redirect(404, "/");
            } else {

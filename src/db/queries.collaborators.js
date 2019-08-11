@@ -8,16 +8,16 @@ module.exports = {
         if(req.user.username == req.body.collaborator){
             return callback("You already own this wiki - can't add collaborator");
         }
-        User.findAll({
+        User.findOne({
             where: {
                 username: req.body.collaborator
             }
         })
-        .then((users) => {
-            if(!users) {
+        .then((user) => {
+            if(!user) {
                 return callback("User not found");
             }
-            Collaborator.findAll({
+            Collaborator.findOne({
                 where: {
                     userId: user.id,
                     wikiId: req.params.wikiId,
@@ -32,7 +32,9 @@ module.exports = {
                     wikiId: req.params.wikiId
                 };
                 return Collaborator.create(newCollaborator)
+                
                 .then((collaborator) => {
+                    console.log(collaborator.userId);
                     callback(null, collaborator);
                 })
                 .catch((err) => {
@@ -44,7 +46,30 @@ module.exports = {
     },
     removeCollaborator() {
 
+    },
+
+    getCollaborators(id, callback) {
+      let result = {};
+      Wiki.findOne({
+          where: { id: id}
+      })
+      .then(wiki => {
+          if(!wiki) {
+              callback(404);
+          } else {
+              result["wiki"] = wiki;
+              Collaborator.scope({ method: ["isCollaboratorFor", wiki.id] })
+              .findAll()
+              .then(collaborators => {
+                  result ["collaborators"] = collaborators;
+                  callback(null, result);
+              })
+              .catch((err) => {
+                  callback(err);
+              });
+          }
+      });
     }
 
 
-}
+};

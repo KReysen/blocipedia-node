@@ -21,6 +21,31 @@ module.exports = {
     },
 
     remove(req, res, next){
+        if(req.user) {
+            collaboratorQueries.removeCollaborator(req, (err, collaborator) => {
+                if(err) {
+                    req.flash("error", err);
+                }
+                res.redirect(req.headers.referer);
+            });
+        } else {
+            req.flash("notice", "You are not authorized to do that");
+            res.redirect(req.headers.referer);
+        }
+    },
 
-    }
+    edit(req, res, next){
+        collaboratorQueries.getCollaborators(
+        req.params.wikiId,
+        (err, result) => {
+            if(err) {
+                req.flash("error", err);
+                res.redirect(404, "/");
+            } else {
+                res.render("collaborators/editCollabs", { ...result });
+            }
+        }
+        );
+    },
+
 }

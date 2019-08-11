@@ -1,6 +1,8 @@
 require("dotenv").config();
 const Wiki = require("./models").Wiki;
 const Collaborator = require("./models").Collaborator;
+const User = require("./models").User;
+const Authorizer = require("../policies/application");
 
 module.exports = {
     getAllWikis(callback) {
@@ -27,18 +29,15 @@ module.exports = {
         })
     },
     getWiki(id, callback){
-        return Wiki.findByPk(id, {
-            include: [
-                {model: Collaborator, as: "collaborators"}
-            ]
-        })
+        return Wiki.findByPk(id)    
         .then((wiki) => {
-            callback(null, wiki);
+          callback(null, wiki);
         })
         .catch((err) => {
-            callback(err);
+          callback(err);
         })
     },
+
     deleteWiki(id, callback){
         return Wiki.destroy({
             where: {id}

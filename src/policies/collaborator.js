@@ -9,4 +9,8 @@ module.exports = class CollaboratorPolicy extends ApplicationPolicy {
     destroy() {
 
     }
+
+    edit() {
+        return this._isAdmin() || this._isOwner();
+    }
 }

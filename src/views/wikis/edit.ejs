@@ -37,6 +37,9 @@
           </select>
         <% } %>
         <button type="submit" class="btn btn-primary">Update</button>
+        <% if(currentUser && (currentUser.role =='2' || (currentUser.role =='1' && wiki.userId == currentUser.id)) ) { %>
+          <a href="/wikis/<%= wiki.id %>/editCollabs" class="btn btn-info">Edit Collaborators</a>
+        <% } %>
       </form>
     </main>
 
