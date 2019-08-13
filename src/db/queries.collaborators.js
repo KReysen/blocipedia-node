@@ -34,7 +34,7 @@ module.exports = {
                 return Collaborator.create(newCollaborator)
                 
                 .then((collaborator) => {
-                    console.log(collaborator.userId);
+                    console.log(collaborator.username);
                     callback(null, collaborator);
                 })
                 .catch((err) => {

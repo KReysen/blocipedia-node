@@ -18,6 +18,6 @@ router.get("/users/:id", userController.show);
 router.post("/users/:id/upgrade", userController.upgrade);
 router.post("/users/:id/downgrade", userController.downgrade);
 
-router.get("/users/:id/collaborators", userController.getCollaborators);
+router.get("/users/collaborators", userController.getCollaborators);
 
 module.exports = router;

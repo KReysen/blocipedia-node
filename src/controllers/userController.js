@@ -118,10 +118,12 @@ module.exports = {
        },
        getCollaborators(req, res, next) {
          console.log('hit getCollaborators function');
+         console.log(req);
          userQueries.getUserCollabs(req.user.id, (err, result) => {
 
            const collaborator = result.collaborator;
            const user = result.user;
+           console.log(collaborator);
           if(err || user == null){
              res.redirect(404, "/");
            } else {

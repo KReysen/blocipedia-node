@@ -15,10 +15,10 @@
     <% if(wiki.private == true)  { %>
       <h2>Collaborators</h2>
       
-        <% if(collaborators) { %>
+        <% if(collaborator) { %>
           <p>
             <ul class ="list-group">
-              <% collaborators.forEach((collaborator) => {  %>
+              <% collaborator.forEach((collaborator) => {  %>
                 <li class="list-group-item">
                   <%= collaborator.User.username %>
                   <% if(currentUser && (currentUser.role == 1 || currentUser.role == 2)) { %>

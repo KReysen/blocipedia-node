@@ -86,6 +86,7 @@ module.exports = {
     getUserCollabs(id, callback) {
       let result = {};
       User.findByPk(id)
+      console.log(user.id)
       .then((user) => {
         if(!user) {
           callback(404);
@@ -98,7 +99,7 @@ module.exports = {
           })
           .catch((err) => {
             callback(err);
-          })
+          });
         }
       });
     }

@@ -28,6 +28,15 @@ module.exports = (sequelize, DataTypes) => {
         order: [["createdAt", "DESC"]]
       }
     });
+    Collaborator.addScope('collabForWiki', (wikiId) => {
+      return {
+        include: [{
+          model: models.Wiki
+        }],
+        where: { userId: userId},
+        order: [['createdAt', 'ASC']]
+      }
+    });
 
   };
   return Collaborator;

@@ -10,12 +10,12 @@
 
     <% include ../static/partials/messages.ejs %>
     <h1>Collaborators page</h1>
-    <% if(collaborator.length !== 0) { %>
+    <% if(collaborators.length !== 0) { %>
       <p>
       <ul class ="list-group">
-        <% collaborator.forEach((collaborator) => {  %>
+        <% collaborators.forEach((collaborators) => {  %>
             <li class="list-group-item">
-                  <a href="/wikis/<%= collaborator.Wiki.id %>"><%= collaborator.Wiki.title %></a>
+                  <a href="/wikis/<%= collaborators.Wiki.id %>"><%= collaborators.Wiki.title %></a>
            </li>
         <% }) %>
       </ul>
