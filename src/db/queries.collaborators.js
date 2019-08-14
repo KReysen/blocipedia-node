@@ -44,7 +44,21 @@ module.exports = {
         });
 
     },
-    removeCollaborator() {
+    removeCollaborator(req, callback) {
+        let userId = req.body.collaborator;
+        let wikiId = req.params.wikiId;
+        Collaborator.destroy({
+            where: {
+                userId: userId,
+                wikiId: wikiId
+            }
+        })
+        .then(deletedRecordsCount => {
+            callback(null, deletedRecordsCount);
+        })
+        .catch((err) => {
+            callback(err);
+        });
 
     },
 
