@@ -11,40 +11,6 @@
  
 
           <% include ../static/partials/messages.ejs %>
-      
-          <!-- <% if(wiki.private == true)  { %>
-  
-      <h2>Collaborators</h2>
-
-        <% if(collaborators) { %>
-<p>There are collaborators for this wiki</p>
-<%= collaborators %>
-          <p>
-            <ul class ="list-group">
-              <% collaborators.forEach((collaborator) => {  %>
-                <li class="list-group-item">
-                  <p>List Item</p>
-                  <%= collaborator.userId %>
-                  <% if(currentUser && currentUser.role == 1 || currentUser.role == 2) { %>
-                    <form action="/wikis/<%= wiki.id %>/editCollabs/remove" method="post">
-                      <button type="submit" class="btn btn-danger">Remove</button>
-                      <input type="hidden" value="<%= collaborator.userId %>" class="form-control" name="collaborator" >
-                    </form>
-                    <% } %>
-                  </li>
-                  <% }) %>
-            </ul>
-          </p>
-          <% if(currentUser && (currentUser.role == 1 || currentUser.role == 2)) { %>
-            <form action="/wikis/<%= wiki.id %>/editCollabs/add" method="post">
-              <div class="input-group">
-                <input type="text" class="form-control" name="collaborator" placeholder="Enter username">
-                <button type="submit" class="btn btn-primary">Add</button>
-              </div>
-            </form>
-            <% } %>
-          <% } %>
-          <% } %> -->
 
           
     <% if(wiki.private == true)  { %>
@@ -54,8 +20,9 @@
           <p>there are collaborators for this wiki</p>
           <p>
             <ul class ="list-group">
-              <% collaborators.forEach((collaborator) => {  %>
+              <% collaborators.forEach(collaborator => {  %>
                 <li class="list-group-item">
+                 
                   <%= collaborator.username %>
                   <% if(currentUser && (currentUser.role == 1 || currentUser.role == 2)) { %>
                     <form action="/wikis/<%= wiki.id %>/editCollabs/remove" method="post">
