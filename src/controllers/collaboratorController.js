@@ -33,7 +33,7 @@ module.exports = {
     },
 
     editPage(req, res, next){
-        console.log(req.params.wikiId);
+       
         collaboratorQueries.getCollaborators(
         req.params.wikiId,
         (err, result) => {
