@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         include: [{
           model: models.Wiki
         }],
-        where: { userId: userId},
+        where: { wikiId: wikiId},
         order: [['createdAt', 'ASC']]
       }
     });

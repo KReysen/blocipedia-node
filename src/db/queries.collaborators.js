@@ -72,7 +72,7 @@ module.exports = {
               callback(404);
           } else {
               result["wiki"] = wiki;
-              Collaborator.scope({ method: ["isCollaboratorFor", wiki.id] })
+              Collaborator.scope({ method: ["collabForWiki", wiki.id] })
               .findAll()
               .then(collaborators => {
                   result ["collaborators"] = collaborators;
