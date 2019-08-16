@@ -64,9 +64,12 @@ module.exports = {
 
     getCollaborators(id, callback) {
       let result = {};
-      Wiki.findOne({
-          where: { id: id}
-      })
+      Wiki.findById(id,{
+        include: [
+             {model: Collaborator, as: "collaborators", include: [
+             {model: User, as: "users" }
+         ]},
+    ]})
       .then(wiki => {
           if(!wiki) {
               callback(404);
