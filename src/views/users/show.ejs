@@ -76,9 +76,19 @@
       </ul>
       <hr>
       <h2> Your Collaborations</h2>
-      
-   </main>
-   
+
+      <% if(user.collaborators) { %>
+
+        <ul class ="list-group">
+          <% user.collaborators.forEach((collaborator) => {  %>
+              <li class="list-group-item">
+                    <a href="/wikis/<%= collaborator.Wiki.id %>"><%= collaborator.Wiki.title %></a>
+             </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+          <p class="lead">You are not a collaborator on any wikis!</p>
+      <% } %>
 
 
 

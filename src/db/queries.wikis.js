@@ -6,7 +6,12 @@ const Authorizer = require("../policies/application");
 
 module.exports = {
     getAllWikis(callback) {
-        return Wiki.findAll()
+        return Wiki.findAll({
+          include: [
+            {model: Collaborator, as: "collaborators", include: [
+              {model: User}
+            ]},
+          ]})
         .then((wikis) => {
             callback(null, wikis);
         })

@@ -65,7 +65,12 @@ module.exports = {
 
     getUser(id, callback){
       let result = {};
-      User.findByPk(id)
+      User.findByPk(id,{
+        include: [
+          {model: Collaborator, as: "collaborators", include: [
+            {model: Wiki}
+          ]},
+        ]})
       .then((user) => {
         if(!user) {
           callback(404);

@@ -31,13 +31,10 @@
 
         <% }else{ %>
 
-          <select name="private" for="private">
-              <option value="false" selected>Public</option>
-              <option value="true" disabled>Private</option>
-          </select>
+ 
         <% } %>
         <button type="submit" class="btn btn-primary">Update</button>
-        <% if(currentUser && (currentUser.role =='2' || (currentUser.role =='1' && wiki.userId == currentUser.id)) ) { %>
+        <% if(wiki.private == true && currentUser && (currentUser.role =='2' || (currentUser.role =='1' && wiki.userId == currentUser.id)) ) { %>
           <a href="/wikis/<%= wiki.id %>/editCollabs" class="btn btn-info">Edit Collaborators</a>
         <% } %>
       </form>
