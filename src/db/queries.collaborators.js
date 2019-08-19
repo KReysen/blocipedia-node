@@ -67,7 +67,7 @@ module.exports = {
       Wiki.findById(id,{
         include: [
              {model: Collaborator, as: "collaborators", include: [
-             {model: User, as: "users" }
+             {model: User}
          ]},
     ]})
       .then(wiki => {
@@ -75,15 +75,16 @@ module.exports = {
               callback(404);
           } else {
               result["wiki"] = wiki;
-              Collaborator.scope({ method: ["collabForWiki", wiki.id] })
-              .findAll()
-              .then(collaborators => {
-                  result ["collaborators"] = collaborators;
-                  callback(null, result);
-              })
-              .catch((err) => {
-                  callback(err);
-              });
+              //console.log(wiki);
+            //   Collaborator.scope({ method: ["collabForWiki", wiki.id] })
+            //   .findAll()
+            //   .then(collaborators => {
+            //       result ["collaborators"] = collaborators;
+                   callback(null, result);
+            //   })
+            //   .catch((err) => {
+            //       callback(err);
+            //   });
           }
       });
     }

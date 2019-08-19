@@ -16,14 +16,14 @@
     <% if(wiki.private == true)  { %>
       <h2>Collaborators</h2>
       
-        <% if(collaborators) { %>
+        <% if(wiki.collaborators) { %>
          
           <p>
             <ul class ="list-group">
-              <% collaborators.forEach(collaborator => {  %>
+              <% wiki.collaborators.forEach(collaborator => {  %>
                 <li class="list-group-item">
                  
-                  <%= collaborator.userId %>
+                  <%= collaborator.User.email %>
             
                   <% if(currentUser && (currentUser.role == 1 || currentUser.role == 2)) { %>
                     <form action="/wikis/<%= wiki.id %>/editCollabs/remove" method="post">

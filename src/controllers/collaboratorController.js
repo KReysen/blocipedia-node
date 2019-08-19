@@ -41,7 +41,7 @@ module.exports = {
                 req.flash("error", err);
                 res.redirect(404, "/");
             } else {
-                
+               // console.log(result);
                 res.render("collaborators/editCollabs", { ...result });
             }
         }

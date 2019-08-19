@@ -19,8 +19,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Collaborator.belongsTo(models.User, {
       foreignKey: "userId",
-      onDelete: "CASCADE",
-      as: "users"
+      onDelete: "CASCADE"
     });
 
     Collaborator.addScope('isCollaboratorFor', (userId) => {
